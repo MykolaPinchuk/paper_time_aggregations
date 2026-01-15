@@ -1,7 +1,7 @@
 This section reports empirical results under the evaluation protocol described above.
 All experiments share the same data splits, model family, entity set, and training protocol.
 
-Time aggregation yields a clear lift over a target encoding only baseline under the no lookahead protocol.
+Time aggregation yields a clear lift over a target-encoding-only baseline under the no-lookahead protocol.
 Appendix Figure \ref{fig:te_lift_deltas} reports paired deltas with confidence intervals for this comparison.
 Table \ref{tab:absolute_metrics_selected} reports the corresponding absolute test metrics for selected specifications.
 Appendix Table \ref{tab:top_specs_absolute} reports additional absolute metrics for representative high-performing specifications.
@@ -86,6 +86,6 @@ PR AUC gains from event count windows are small and mixed.
 \subsection{Practical guidance}
 For this dataset and protocol, a trailing window design is a robust default.
 An event count window can be added when a small additional ROC AUC gain is valuable.
-Gap windows and bucketized windows are not recommended under no lookahead evaluation.
+Gap windows and bucketized windows are not recommended under no-lookahead evaluation.
 
 \clearpage
