@@ -1,9 +1,11 @@
-.PHONY: help venv verify_env preflight preflight_data data sample10 tecache10 te_lift event_count_sweep grid10_te grid10_note postprocess postprocess_fig234 figures paper arxiv_bundle smoke clean
+.PHONY: help venv verify_env preflight preflight_data validate_v1 data sample10 tecache10 te_lift event_count_sweep grid10_te grid10_note postprocess postprocess_fig234 figures paper arxiv_bundle smoke clean
 
 PY ?= python
 ART ?= artifacts/v1
 LONG_WALL ?= 999999
 PER_RUN_TIMEOUT ?= 7200
+TE_N_JOBS ?= 15
+NOTE_N_JOBS ?= 1
 
 help:
 	@echo "Targets:"
@@ -35,6 +37,9 @@ preflight:
 preflight_data:
 	$(PY) scripts/preflight.py --check-files
 
+validate_v1:
+	$(PY) scripts/validate_v1.py
+
 data:
 	@echo "Download Avazu CTR data from Kaggle and place train.csv at data/raw/train.csv"
 	@echo "See docs/REPRODUCE.md for details."
@@ -46,18 +51,18 @@ tecache10:
 	$(PY) -m kaggle_clicks.precompute_te --sample-parquet data/interim/train_sample_10pct.parquet --out-parquet data/interim/te_cache/train_sample_10pct_te_m100.parquet --m 100
 
 te_lift:
-	$(PY) scripts/run_te_lift_v1.py --train-csv data/raw/train.csv --sample-pct 10 --sample-parquet data/interim/train_sample_10pct.parquet --te-parquet data/interim/te_cache/train_sample_10pct_te_m100.parquet --m 100 --n-jobs 1 --export-preds
+	$(PY) scripts/run_te_lift_v1.py --train-csv data/raw/train.csv --sample-pct 10 --sample-parquet data/interim/train_sample_10pct.parquet --te-parquet data/interim/te_cache/train_sample_10pct_te_m100.parquet --m 100 --n-jobs $(TE_N_JOBS) --export-preds
 
 event_count_sweep:
-	$(PY) -m kaggle_clicks.run_sweep_event_counts --train-csv data/raw/train.csv --sample-pct 10 --sample-parquet data/interim/train_sample_10pct.parquet --te-parquet data/interim/te_cache/train_sample_10pct_te_m100.parquet --m 100 --time-agg-windows 1 6 24 48 168 --include-baseline --rolling-tail --export-preds --sweep-tag event_counts_A3_10pct --per-run-timeout-seconds 7200 --resume
+	$(PY) -m kaggle_clicks.run_sweep_event_counts --train-csv data/raw/train.csv --sample-pct 10 --sample-parquet data/interim/train_sample_10pct.parquet --te-parquet data/interim/te_cache/train_sample_10pct_te_m100.parquet --m 100 --time-agg-windows 1 6 24 48 168 --include-baseline --rolling-tail --export-preds --sweep-tag event_counts_A3_10pct --n-jobs $(TE_N_JOBS) --per-run-timeout-seconds 7200 --resume
 	$(PY) -m kaggle_clicks.postprocess_sweep_inference --sweep-dir $$(ls -1dt runs/sweeps/*event_counts_A3_10pct* | head -n 1) --baseline-run-id event0 --split test --bootstrap-reps 200 --seed 42
 	$(PY) scripts/plot_event_count_sweep.py --sweep-dir $$(ls -1dt runs/sweeps/*event_counts_A3_10pct* | head -n 1) --out-base artifacts/v1/figures_main/fig_event_count_sweep_A3_10pct
 
 grid10_te:
-	$(PY) -m kaggle_clicks.run_sweep_family_a_full_grid --sample-pct 10 --sample-parquet data/interim/train_sample_10pct.parquet --sweep-tag paper_full_grid_10pct --rolling-tail --export-preds --export-preds-splits test --n-jobs 1 --te-parquet data/interim/te_cache/train_sample_10pct_te_m100.parquet --max-wall-seconds $(LONG_WALL) --per-run-timeout-seconds $(PER_RUN_TIMEOUT)
+	$(PY) -m kaggle_clicks.run_sweep_family_a_full_grid --sample-pct 10 --sample-parquet data/interim/train_sample_10pct.parquet --sweep-tag paper_full_grid_10pct --rolling-tail --export-preds --export-preds-splits test --n-jobs $(TE_N_JOBS) --te-parquet data/interim/te_cache/train_sample_10pct_te_m100.parquet --max-wall-seconds $(LONG_WALL) --per-run-timeout-seconds $(PER_RUN_TIMEOUT)
 
 grid10_note:
-	$(PY) -m kaggle_clicks.run_sweep_family_a_full_grid --sample-pct 10 --sample-parquet data/interim/train_sample_10pct.parquet --sweep-tag paper_full_grid_10pct_noTE_with_preds --rolling-tail --export-preds --export-preds-splits test --n-jobs 1 --no-te --te-parquet data/interim/te_cache/train_sample_10pct_te_m100.parquet --max-wall-seconds $(LONG_WALL) --per-run-timeout-seconds $(PER_RUN_TIMEOUT)
+	$(PY) -m kaggle_clicks.run_sweep_family_a_full_grid --sample-pct 10 --sample-parquet data/interim/train_sample_10pct.parquet --sweep-tag paper_full_grid_10pct_noTE_with_preds --rolling-tail --export-preds --export-preds-splits test --n-jobs $(NOTE_N_JOBS) --no-te --te-parquet data/interim/te_cache/train_sample_10pct_te_m100.parquet --max-wall-seconds $(LONG_WALL) --per-run-timeout-seconds $(PER_RUN_TIMEOUT)
 
 postprocess:
 	$(PY) scripts/postprocess_v1.py --out-dir $(ART)

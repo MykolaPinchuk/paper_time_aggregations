@@ -15,7 +15,11 @@
 - Python 3.10.x
 - Install pinned packages: `pip install -r requirements.txt`
 
-For the closest match to the reference numbers, use the pinned versions and run with `--n-jobs 1` (as in the provided commands).
+For the closest match to the reference numbers, use the pinned versions **and match the paper’s XGBoost thread setting**:
+- no-TE grid: `--n-jobs 1`
+- TE + time-agg grid: `--n-jobs 15`
+
+Changing `--n-jobs` can shift the TE grid metrics by ~1e-3 (and can change the ordering among very close specifications). The broad qualitative patterns (e.g., event-window vs gap/bucket) are stable, but “league-table” membership near the margin may not be.
 
 ## Data
 
@@ -39,7 +43,7 @@ All commands should be run from the repo root.
 Note: the sweep runner has a safety default `--max-wall-seconds 280` (so it doesn’t accidentally run for hours). For an unattended overnight run, pass a large value (e.g. `--max-wall-seconds 999999`) and set a generous per-run timeout (e.g. `--per-run-timeout-seconds 7200`). If a run is interrupted, re-running the same command will skip already-completed specs.
 
 TE grid:
-- `python -m kaggle_clicks.run_sweep_family_a_full_grid --sample-pct 10 --sample-parquet data/interim/train_sample_10pct.parquet --sweep-tag paper_full_grid_10pct --rolling-tail --export-preds --n-jobs 1 --te-parquet data/interim/te_cache/train_sample_10pct_te_m100.parquet`
+- `python -m kaggle_clicks.run_sweep_family_a_full_grid --sample-pct 10 --sample-parquet data/interim/train_sample_10pct.parquet --sweep-tag paper_full_grid_10pct --rolling-tail --export-preds --n-jobs 15 --te-parquet data/interim/te_cache/train_sample_10pct_te_m100.parquet`
 
 no-TE grid:
 - `python -m kaggle_clicks.run_sweep_family_a_full_grid --sample-pct 10 --sample-parquet data/interim/train_sample_10pct.parquet --sweep-tag paper_full_grid_10pct_noTE_with_preds --rolling-tail --export-preds --n-jobs 1 --no-te --te-parquet data/interim/te_cache/train_sample_10pct_te_m100.parquet`
@@ -50,7 +54,7 @@ Tip: for the paper’s paired inference/contrast scripts you only need `preds_te
 
 These runs generate the TE-only baseline and the two selected time-aggregation specs used for the headline lift figure:
 
-- `python scripts/run_te_lift_v1.py --train-csv data/raw/train.csv --sample-pct 10 --sample-parquet data/interim/train_sample_10pct.parquet --te-parquet data/interim/te_cache/train_sample_10pct_te_m100.parquet --m 100 --n-jobs 1 --export-preds`
+- `python scripts/run_te_lift_v1.py --train-csv data/raw/train.csv --sample-pct 10 --sample-parquet data/interim/train_sample_10pct.parquet --te-parquet data/interim/te_cache/train_sample_10pct_te_m100.parquet --m 100 --n-jobs 15 --export-preds`
 
 ### 4) Postprocess into stable artifacts
 
