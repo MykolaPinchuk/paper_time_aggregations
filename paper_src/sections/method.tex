@@ -1,0 +1,90 @@
+The model is an XGBoost classifier \citep{chen2016xgboost}.
+Hyperparameters are fixed across experiments.
+Training uses early stopping on the validation split.
+
+Appendix Table \ref{tab:xgb_params} lists key model hyperparameters.
+The model uses objective \texttt{binary:logistic}.
+Training uses early stopping rounds $=50$ with evaluation metrics AUC and AUC PR on the validation split.
+
+This paper compares three feature configurations.
+The first configuration is a time aware target encoding baseline.
+The second configuration adds time aggregation features to this baseline.
+The third configuration removes target encoding and uses only time aggregation features as a sensitivity check.
+Target encoding follows standard practice for high cardinality categorical features \citep{micci2001preprocessing}.
+
+The time aware target encoding baseline is computed at hour resolution with a one hour shift.
+For a row at hour $h$, statistics use only labels from hours $< h$.
+Appendix Section \ref{sec:appendix_te_details} provides the full definition and implementation details.
+
+Time aggregation features are entity history summaries computed under the no lookahead constraint.
+Time is represented at hour resolution.
+For an impression at hour $H$, all history based features use only events from hours strictly before $H$.
+This excludes same hour information.
+
+The following entity keys are used: device ip, device id, app id, and site id.
+For each key and each window, the features include impression counts and smoothed click rates.
+For impressions $I$ and clicks $C$ in a window, the impression feature is $\log(1+I)$.
+The click rate feature is $(C + \alpha) / (I + \alpha + \beta)$ with $\alpha=1$ and $\beta=10$.
+
+This paper varies two aspects of window design.
+The first aspect is the length tuple, expressed in hours back.
+The second aspect is the window shape.
+The window shapes include trailing windows, a one hour gap variant, bucketized recency buckets, calendar aligned windows, and an event count window defined as the last fifty impressions.
+
+This paper defines a window specification as a length tuple and a shape.
+For example, the trailing specification with length tuple $(1, 6, 24, 48, 168)$ uses trailing windows at those hour lengths.
+
+\subsection{Window length tuples}
+Table \ref{tab:length_sets} lists the benchmarked length tuples.
+Each tuple is evaluated under multiple window shapes.
+
+\begin{table}[t]
+  \centering
+  \begin{tabular}{l}
+    \toprule
+    Length tuple (hours) \\
+    \midrule
+    $(1, 6, 24)$ \\
+    $(1, 3, 6, 12, 24)$ \\
+    $(1, 6, 24, 48, 168)$ \\
+    $(1, 2, 4, 8, 16, 24, 48, 96, 168)$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{Window length tuples used in the design grid.}
+  \label{tab:length_sets}
+\end{table}
+
+\subsection{Window shapes}
+Window shapes define how the history for an impression at hour $H$ is converted into time windows.
+For a window of length $L$ hours, a trailing window uses the half open interval $[H-L, H)$.
+
+Table \ref{tab:window_shapes} summarizes the benchmarked shapes.
+Shapes that ``add'' windows are applied on top of trailing windows for the same length tuple.
+
+\begin{table}[t]
+  \centering
+  \begin{tabular}{p{0.18\linewidth}p{0.76\linewidth}}
+    \toprule
+    Shape & Definition used in this study \\
+    \midrule
+    trailing &
+      For each $L$ in the length tuple, use events in $[H-L, H)$. \\
+    gap1 &
+      For each $L$ in the length tuple, use events in $[H-(L+1), H-1)$.
+      This excludes the most recent hour. \\
+    bucket &
+      Let $0 < e_1 < \dots < e_K$ be the hour edges from the length tuple.
+      Construct disjoint buckets $[H-e_1, H)$, $[H-e_2, H-e_1)$, \dots, $[H-e_K, H-e_{K-1})$.
+      Features are computed per bucket. \\
+    calendar &
+      Add calendar aligned day windows on top of trailing windows.
+      For day based lengths, such as $L \in \{24, 48, 168\}$, the window is aligned to full days strictly before the impression hour.
+      For sub day lengths, the calendar window matches the trailing window. \\
+    event50 &
+      Add an event count window on top of trailing windows.
+      For each entity, use the most recent 50 impressions strictly before hour $H$. \\
+    \bottomrule
+  \end{tabular}
+  \caption{Window shape definitions.}
+  \label{tab:window_shapes}
+\end{table}

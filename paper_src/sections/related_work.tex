@@ -1,0 +1,16 @@
+High cardinality tabular prediction tasks arise across domains.
+They often combine sparsity, repeated identifiers, and temporal drift.
+The Avazu click through rate benchmark is one public example.
+In this setting, industrial systems have historically relied on linear models trained with online optimization and feature hashing \citep{mcmahan2013ad}.
+More expressive approaches include factorization machines and deep models that combine memorization and generalization \citep{rendle2010factorization,cheng2016wide,guo2017deepfm}.
+
+Gradient boosted decision trees are a strong baseline for tabular data and remain widely used in industry \citep{friedman2001greedy,chen2016xgboost}.
+Their performance depends heavily on feature engineering.
+In particular, history based count and rate features are common because identifiers repeat and the data distribution drifts.
+Industry studies also emphasize the importance of time aware evaluation and deployment constraints when comparing feature sets \citep{he2014practical}.
+
+History based features can leak future information if aggregates are computed using data from the prediction horizon.
+Out of time splitting and no lookahead feature simulation are common safeguards \citep{he2014practical}.
+Target encoding is another strong technique for high cardinality categories.
+It requires careful fold based estimation to avoid target leakage \citep{micci2001preprocessing}.
+This paper focuses on simple, no lookahead time aggregation features and quantifies how design choices affect performance under out of time evaluation.

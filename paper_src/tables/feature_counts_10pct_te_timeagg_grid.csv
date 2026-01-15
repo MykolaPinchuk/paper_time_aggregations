@@ -1,0 +1,21 @@
+run_id,description,n_cat_cols,n_te_features,time_agg_entities,time_agg_windows,time_agg_bucket_edges,time_agg_calendar,time_agg_event_windows,n_time_agg_features,n_total_features
+A4_calendar,"A4 calendar windows on trailing (1, 2, 4, 8, 16, 24, 48, 96, 168)",21,42,4,1 2 4 8 16 24 48 96 168,,True,,92,136
+A4_event50,A4 event windows last50,21,42,4,1 2 4 8 16 24 48 96 168,,False,50,84,128
+A4_bucket,"A4 bucket edges (1, 2, 4, 8, 16, 24, 48, 96, 168)",21,42,4,,1 2 4 8 16 24 48 96 168,False,,76,120
+A4_gap1,"A4 gap g=1 windows (1, 2, 4, 8, 16, 24, 48, 96, 168)",21,42,4,1 2 4 8 16 24 48 96 168,,False,,76,120
+A4_trailing,"A4 trailing windows (1, 2, 4, 8, 16, 24, 48, 96, 168)",21,42,4,1 2 4 8 16 24 48 96 168,,False,,76,120
+A2_calendar,"A2 calendar windows on trailing (1, 3, 6, 12, 24)",21,42,4,1 3 6 12 24,,True,,60,104
+A3_calendar,"A3 calendar windows on trailing (1, 6, 24, 48, 168)",21,42,4,1 6 24 48 168,,True,,60,104
+A2_event50,A2 event windows last50,21,42,4,1 3 6 12 24,,False,50,52,96
+A3_event50,A3 event windows last50,21,42,4,1 6 24 48 168,,False,50,52,96
+A1_calendar,"A1 calendar windows on trailing (1, 6, 24)",21,42,4,1 6 24,,True,,44,88
+A2_bucket,"A2 bucket edges (1, 3, 6, 12, 24)",21,42,4,,1 3 6 12 24,False,,44,88
+A2_gap1,"A2 gap g=1 windows (1, 3, 6, 12, 24)",21,42,4,1 3 6 12 24,,False,,44,88
+A2_trailing,"A2 trailing windows (1, 3, 6, 12, 24)",21,42,4,1 3 6 12 24,,False,,44,88
+A3_bucket,"A3 bucket edges (1, 6, 24, 48, 168)",21,42,4,,1 6 24 48 168,False,,44,88
+A3_gap1,"A3 gap g=1 windows (1, 6, 24, 48, 168)",21,42,4,1 6 24 48 168,,False,,44,88
+A3_trailing,"A3 trailing windows (1, 6, 24, 48, 168)",21,42,4,1 6 24 48 168,,False,,44,88
+A1_event50,A1 event windows last50,21,42,4,1 6 24,,False,50,36,80
+A1_bucket,"A1 bucket edges (1, 6, 24)",21,42,4,,1 6 24,False,,28,72
+A1_gap1,"A1 gap g=1 windows (1, 6, 24)",21,42,4,1 6 24,,False,,28,72
+A1_trailing,"A1 trailing windows (1, 6, 24)",21,42,4,1 6 24,,False,,28,72
