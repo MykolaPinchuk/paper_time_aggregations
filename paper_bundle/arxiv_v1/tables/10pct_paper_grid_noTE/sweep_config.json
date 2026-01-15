@@ -1,0 +1,408 @@
+{
+  "created_utc": "20260114_041514",
+  "export_preds": true,
+  "export_preds_splits": [
+    "test"
+  ],
+  "max_parallel_runs": 1,
+  "mem_safety_margin_gib": 6.0,
+  "min_mem_available_gib": 2.0,
+  "min_swap_free_gib": 1.0,
+  "model_params": {
+    "colsample_bytree": 0.8,
+    "learning_rate": 0.05,
+    "max_depth": 6,
+    "min_child_weight": 10.0,
+    "n_estimators": 800,
+    "n_jobs": 1,
+    "reg_lambda": 5.0,
+    "subsample": 0.8
+  },
+  "per_run_timeout_seconds": 7200,
+  "ram_budget_gib": null,
+  "rolling_tail": true,
+  "sample_frac": null,
+  "sample_parquet": "data/interim/train_sample_10pct.parquet",
+  "sample_pct": 10,
+  "specs": [
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "6",
+        "24"
+      ],
+      "description": "A1 trailing windows (1, 6, 24)",
+      "run_id": "A1_trailing"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "6",
+        "24",
+        "--time-agg-gap-hours",
+        "1"
+      ],
+      "description": "A1 gap g=1 windows (1, 6, 24)",
+      "run_id": "A1_gap1"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "--time-agg-bucket-edges",
+        "1",
+        "6",
+        "24"
+      ],
+      "description": "A1 bucket edges (1, 6, 24)",
+      "run_id": "A1_bucket"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "6",
+        "24",
+        "--time-agg-calendar"
+      ],
+      "description": "A1 calendar windows on trailing (1, 6, 24)",
+      "run_id": "A1_calendar"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "6",
+        "24",
+        "--time-agg-event-windows",
+        "50"
+      ],
+      "description": "A1 event windows last50",
+      "run_id": "A1_event50"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "3",
+        "6",
+        "12",
+        "24"
+      ],
+      "description": "A2 trailing windows (1, 3, 6, 12, 24)",
+      "run_id": "A2_trailing"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "3",
+        "6",
+        "12",
+        "24",
+        "--time-agg-gap-hours",
+        "1"
+      ],
+      "description": "A2 gap g=1 windows (1, 3, 6, 12, 24)",
+      "run_id": "A2_gap1"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "--time-agg-bucket-edges",
+        "1",
+        "3",
+        "6",
+        "12",
+        "24"
+      ],
+      "description": "A2 bucket edges (1, 3, 6, 12, 24)",
+      "run_id": "A2_bucket"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "3",
+        "6",
+        "12",
+        "24",
+        "--time-agg-calendar"
+      ],
+      "description": "A2 calendar windows on trailing (1, 3, 6, 12, 24)",
+      "run_id": "A2_calendar"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "3",
+        "6",
+        "12",
+        "24",
+        "--time-agg-event-windows",
+        "50"
+      ],
+      "description": "A2 event windows last50",
+      "run_id": "A2_event50"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "6",
+        "24",
+        "48",
+        "168"
+      ],
+      "description": "A3 trailing windows (1, 6, 24, 48, 168)",
+      "run_id": "A3_trailing"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "6",
+        "24",
+        "48",
+        "168",
+        "--time-agg-gap-hours",
+        "1"
+      ],
+      "description": "A3 gap g=1 windows (1, 6, 24, 48, 168)",
+      "run_id": "A3_gap1"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "--time-agg-bucket-edges",
+        "1",
+        "6",
+        "24",
+        "48",
+        "168"
+      ],
+      "description": "A3 bucket edges (1, 6, 24, 48, 168)",
+      "run_id": "A3_bucket"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "6",
+        "24",
+        "48",
+        "168",
+        "--time-agg-calendar"
+      ],
+      "description": "A3 calendar windows on trailing (1, 6, 24, 48, 168)",
+      "run_id": "A3_calendar"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "6",
+        "24",
+        "48",
+        "168",
+        "--time-agg-event-windows",
+        "50"
+      ],
+      "description": "A3 event windows last50",
+      "run_id": "A3_event50"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "2",
+        "4",
+        "8",
+        "16",
+        "24",
+        "48",
+        "96",
+        "168"
+      ],
+      "description": "A4 trailing windows (1, 2, 4, 8, 16, 24, 48, 96, 168)",
+      "run_id": "A4_trailing"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "2",
+        "4",
+        "8",
+        "16",
+        "24",
+        "48",
+        "96",
+        "168",
+        "--time-agg-gap-hours",
+        "1"
+      ],
+      "description": "A4 gap g=1 windows (1, 2, 4, 8, 16, 24, 48, 96, 168)",
+      "run_id": "A4_gap1"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "--time-agg-bucket-edges",
+        "1",
+        "2",
+        "4",
+        "8",
+        "16",
+        "24",
+        "48",
+        "96",
+        "168"
+      ],
+      "description": "A4 bucket edges (1, 2, 4, 8, 16, 24, 48, 96, 168)",
+      "run_id": "A4_bucket"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "2",
+        "4",
+        "8",
+        "16",
+        "24",
+        "48",
+        "96",
+        "168",
+        "--time-agg-calendar"
+      ],
+      "description": "A4 calendar windows on trailing (1, 2, 4, 8, 16, 24, 48, 96, 168)",
+      "run_id": "A4_calendar"
+    },
+    {
+      "cli_args": [
+        "--time-agg-entities",
+        "device_ip",
+        "device_id",
+        "app_id",
+        "site_id",
+        "--time-agg-windows",
+        "1",
+        "2",
+        "4",
+        "8",
+        "16",
+        "24",
+        "48",
+        "96",
+        "168",
+        "--time-agg-event-windows",
+        "50"
+      ],
+      "description": "A4 event windows last50",
+      "run_id": "A4_event50"
+    }
+  ],
+  "sweep_dir": "runs/sweeps/20260114_041514_paper_full_grid_10pct_noTE_with_preds_s10pct",
+  "sweep_tag": "paper_full_grid_10pct_noTE_with_preds",
+  "te_m": 100.0,
+  "te_parquet": "data/interim/te_cache/train_sample_10pct_te_m100.parquet",
+  "train_csv": "data/raw/train.csv"
+}

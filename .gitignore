@@ -39,6 +39,7 @@ paper_src/**/*.toc
 .vscode/
 *.swp
 .ipynb_checkpoints/
+overnight_*.log
 
 # Agent/dev tooling (avoid accidental publication)
 AGENTS.md

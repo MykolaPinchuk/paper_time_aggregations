@@ -1,0 +1,45 @@
+This section discusses potential mechanisms behind the observed window length and shape effects.
+The discussion is hypothesis driven.
+The goal is to guide future experiments that test these mechanisms directly.
+
+Length tuples control which time scales are exposed to the model.
+Click behavior can change over minutes, hours, and days.
+Short windows can capture immediate recency effects and repeated exposure.
+Day and week scale windows can capture periodicity and slower drift.
+If a length tuple omits a relevant scale, a different window shape cannot recover it.
+In that case, shape changes mainly redistribute the same historical mass.
+
+Trailing windows represent recent history and its decay in a direct way.
+They also provide a simple bias variance tradeoff.
+As $L$ increases, a trailing window reduces variance of rate estimates but can increase bias under drift.
+A small set of trailing windows creates a multi resolution summary.
+A tree model can combine these summaries in a nonlinear way.
+This can be sufficient when the main signal is recency and repetition.
+
+Gap windows exclude the most recent hour from the history window.
+This can remove the most informative part of the signal when behavior changes quickly.
+It can also remove short term dependence for repeated identifiers.
+Gap windows can be useful when very recent data is contaminated by a leakage channel.
+In this study, the no lookahead constraint already excludes same hour leakage.
+Therefore, the gap mainly acts as an unnecessary information restriction.
+
+Bucketized windows partition history into disjoint intervals.
+This increases feature dimensionality and can increase estimation variance.
+Each bucket contains fewer events than an overlapping trailing window at a similar horizon.
+Bucketization also removes cumulative smoothing from nested trailing windows.
+If the signal is approximately monotone in recency, trailing windows represent it efficiently.
+Bucketization may help when distinct time bands have distinct effects.
+
+Fixed length time windows implicitly assume a stable event rate.
+For many entity keys, event rates vary widely across entities and over time.
+An event count window adapts by fixing the number of observations used to estimate a rate.
+This can stabilize estimates for sparse entities.
+It can also reduce the impact of bursty traffic for frequent entities.
+It may also be more robust under hour resolution timestamps with irregular sampling.
+
+Calendar aligned windows aim to represent full previous days or weeks.
+They can help when boundary effects exist at calendar transitions.
+However, in hour resolution data, calendar alignment can be redundant with explicit time features.
+Examples include hour of day and day of week.
+Calendar blocks can also mix heterogeneous periods under drift.
+These factors can yield small effects with signs that vary across length tuples.
