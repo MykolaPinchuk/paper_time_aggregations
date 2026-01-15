@@ -7,19 +7,19 @@ The model uses objective \texttt{binary:logistic}.
 Training uses early stopping rounds $=50$ with evaluation metrics AUC and AUC PR on the validation split.
 
 This paper compares three feature configurations.
-The first configuration is a time aware target encoding baseline.
+The first configuration is a time-aware target encoding baseline.
 The second configuration adds time aggregation features to this baseline.
 The third configuration removes target encoding and uses only time aggregation features as a sensitivity check.
 Target encoding follows standard practice for high cardinality categorical features \citep{micci2001preprocessing}.
 
-The time aware target encoding baseline is computed at hour resolution with a one hour shift.
+The time-aware target encoding baseline is computed at hour resolution with a one-hour shift.
 For a row at hour $h$, statistics use only labels from hours $< h$.
 Appendix Section \ref{sec:appendix_te_details} provides the full definition and implementation details.
 
-Time aggregation features are entity history summaries computed under the no lookahead constraint.
+Time aggregation features are entity history summaries computed under the no-lookahead constraint.
 Time is represented at hour resolution.
-For an impression at hour $H$, all history based features use only events from hours strictly before $H$.
-This excludes same hour information.
+For an impression at hour $H$, all history-based features use only events from hours strictly before $H$.
+This excludes same-hour information.
 
 The following entity keys are used: device ip, device id, app id, and site id.
 For each key and each window, the features include impression counts and smoothed click rates.
@@ -29,7 +29,7 @@ The click rate feature is $(C + \alpha) / (I + \alpha + \beta)$ with $\alpha=1$ 
 This paper varies two aspects of window design.
 The first aspect is the length tuple, expressed in hours back.
 The second aspect is the window shape.
-The window shapes include trailing windows, a one hour gap variant, bucketized recency buckets, calendar aligned windows, and an event count window defined as the last fifty impressions.
+The window shapes include trailing windows, a one-hour gap variant, bucketized recency buckets, calendar-aligned windows, and an event count window defined as the last fifty impressions.
 
 This paper defines a window specification as a length tuple and a shape.
 For example, the trailing specification with length tuple $(1, 6, 24, 48, 168)$ uses trailing windows at those hour lengths.

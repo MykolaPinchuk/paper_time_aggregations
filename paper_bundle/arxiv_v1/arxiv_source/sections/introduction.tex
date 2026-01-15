@@ -6,10 +6,10 @@ If features incorporate future information, even in subtle ways, reported gains 
 
 This paper focuses on time aggregation features for XGBoost models.
 It studies simple entity history statistics computed over recent windows.
-The paper uses strict out of time splits and a no lookahead feature constraint in which features for hour $H$ use only events from hours $< H$.
+The paper uses strict out-of-time splits and a no-lookahead feature constraint in which features for hour $H$ use only events from hours $< H$.
 
 The main contribution is empirical.
-This paper shows that no lookahead time aggregation yields a clear lift over a time aware target encoding baseline.
+This paper shows that no-lookahead time aggregation yields a clear lift over a time-aware target encoding baseline.
 It then quantifies how performance changes under window design choices.
 In this setting, trailing windows are a strong default.
 Event count windows are the most reliable modification.

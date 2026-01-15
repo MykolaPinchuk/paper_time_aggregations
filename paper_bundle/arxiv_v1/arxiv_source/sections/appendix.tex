@@ -1,21 +1,21 @@
 \subsection*{Dataset and application context}
-Click through rate prediction is one example of a large scale, temporally structured, tabular classification problem.
+Click-through rate prediction is one example of a large-scale, temporally structured, tabular classification problem.
 An advertisement is shown to a user in response to a page view or an app interaction.
 Each showing is an impression.
 Some impressions lead to a click.
-The click through rate is the probability of click conditional on an impression.
+The click-through rate is the probability of click conditional on an impression.
 Accurate click probability estimates are used in ranking and bidding pipelines.
 
 The Avazu dataset is a public snapshot of an ad marketplace log at impression level.
 Each row corresponds to one impression and includes a binary click label and a timestamp at hour resolution.
 The feature space is dominated by high cardinality categorical identifiers that describe the user device, the application, and the site.
-These identifiers induce strong repetition patterns and create a large cold start surface as new values appear over time.
+These identifiers induce strong repetition patterns and create a large cold-start surface as new values appear over time.
 The label is sparse, so PR AUC complements ROC AUC by emphasizing precision and recall under class imbalance.
 
 This setting is temporally nonstationary.
 Traffic composition and user intent change over time, and the statistical relationship between identifiers and click probability drifts.
-Therefore, offline evaluation must be time aware.
-This paper uses strict out of time splits and a no lookahead simulation of feature availability.
+Therefore, offline evaluation must be time-aware.
+This paper uses strict out-of-time splits and a no-lookahead simulation of feature availability.
 These constraints aim to prevent leakage and to better approximate a production deployment where features must be computed from past events only.
 
 \subsection{Deterministic sampling procedure}
@@ -54,13 +54,13 @@ Table \ref{tab:xgb_params} reports XGBoost hyperparameters used in all experimen
 \subsection{Time-aware target encoding}
 \label{sec:appendix_te_details}
 This section specifies the target encoding baseline used in the paper.
-Target encoding is computed at hour resolution with a one hour shift.
+Target encoding is computed at hour resolution with a one-hour shift.
 For a row at hour $h$, statistics use only labels from hours $< h$.
 
 \subsubsection*{Split-boundary handling}
 For each fold, target encoding and time aggregation features are computed for all rows in chronological order before slicing into train, validation, and test splits.
 Therefore, features in the validation and test splits may depend on label feedback from earlier hours in the same fold, including earlier hours within the same day, but never from the current hour.
-This matches a streaming evaluation setting in which click outcomes become available with one hour delay.
+This matches a streaming evaluation setting in which click outcomes become available with a one-hour delay.
 
 The model is trained on numeric features only.
 It includes:
@@ -190,7 +190,7 @@ Peak memory is dominated by large in-memory arrays for the feature matrix and in
 \subsection{Event-count window sensitivity}
 \label{sec:appendix_event_count_sensitivity}
 Figure \ref{fig:event_count_sweep} reports a small sensitivity sweep that varies the event-count window size $N$ on a one percent sample with target encoding enabled and length tuple $(1, 6, 24, 48, 168)$.
-This sweep uses a single split rather than the rolling tail protocol.
+This sweep uses a single split rather than the rolling-tail protocol.
 
 \begin{figure}[t]
   \centering
@@ -202,7 +202,7 @@ This sweep uses a single split rather than the rolling tail protocol.
 \subsection*{EDA context}
 Figure \ref{fig:eda_ctr} shows CTR drift by day.
 Figure \ref{fig:eda_unseen} shows an unseen rate summary for top categorical features.
-These plots provide context for why out of time evaluation and cold start effects matter.
+These plots provide context for why out-of-time evaluation and cold-start effects matter.
 
 \begin{figure}[t]
   \centering
@@ -224,7 +224,7 @@ This paper includes supplementary tables that report the full design grids and p
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.92\linewidth]{figures/te_lift_deltas.png}
-  \caption{Paired lift from adding time aggregation to a target encoding baseline under no lookahead evaluation.}
+  \caption{Paired lift from adding time aggregation to a target encoding baseline under no-lookahead evaluation.}
   \label{fig:te_lift_deltas}
 \end{figure}
 
