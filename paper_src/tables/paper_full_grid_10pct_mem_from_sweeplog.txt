@@ -1,0 +1,2 @@
+min_avail_gib=6.45
+min_swap_free_gib=5.57

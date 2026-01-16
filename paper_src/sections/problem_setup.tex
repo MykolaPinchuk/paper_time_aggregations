@@ -1,0 +1,39 @@
+This paper uses the Kaggle Avazu click-through rate prediction dataset.
+Each row is an ad impression, meaning a single event in which an advertisement is shown to a user.
+The label indicates whether the shown ad was clicked.
+Each row also includes a timestamp at hour resolution.
+All time windows in this paper are defined in hours.
+The feature space contains many high cardinality categorical fields such as device and site identifiers.
+
+The prediction task is to estimate the probability of click for each impression.
+This paper reports ROC AUC as the primary metric and PR AUC as a secondary metric.
+
+Evaluation uses strict out-of-time splits.
+This study uses a deterministic ten percent sample and two rolling-tail folds.
+Each fold uses three disjoint, chronologically ordered splits.
+Fold A trains on days up to $D-2$, validates on day $D-1$, and tests on day $D$.
+Fold B trains on days up to $D-3$, validates on day $D-2$, and tests on day $D-1$.
+The ten percent sample is constructed deterministically from the row identifier using a hash-based filter.
+Appendix Section \ref{sec:appendix_sampling} provides the exact rule.
+In this sample, the date range spans 2014-10-21 through 2014-10-30 and contains about 4.04 million impressions.
+Table \ref{tab:splits_10pct} reports the exact split ranges, row counts, and click rates.
+
+\begin{table}[t]
+  \centering
+  \small
+  \input{tables/rolling_tail_splits_10pct.tex}
+  \caption{Exact rolling-tail splits on the deterministic ten percent sample, including hour ranges, number of rows, and click rates.}
+  \label{tab:splits_10pct}
+\end{table}
+
+Feature computation follows a no-lookahead constraint.
+For impressions at hour $H$, aggregation features and encodings may use only events from hours strictly before $H$.
+This excludes same-hour information to avoid leakage through contemporaneous counts.
+Figure \ref{fig:protocol} summarizes the evaluation protocol and the feature availability constraint.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_protocol_schematic.pdf}
+  \caption{Evaluation protocol and no-lookahead feature constraint. For an impression at hour $H$, history-based features use only events from hours $< H$, and they exclude same-hour information.}
+  \label{fig:protocol}
+\end{figure}

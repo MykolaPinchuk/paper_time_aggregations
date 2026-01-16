@@ -1,0 +1,54 @@
+# Data (not distributed)
+data/raw/
+data/interim/
+
+# Run outputs (generated)
+runs/
+artifacts/
+
+# Python
+.venv/
+*.egg-info/
+build/
+dist/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Data / intermediates
+*.parquet
+
+# LaTeX (paper_src build artifacts)
+paper_src/_build/
+paper_src/**/*.aux
+paper_src/**/*.bbl
+paper_src/**/*.blg
+paper_src/**/*.fdb_latexmk
+paper_src/**/*.fls
+paper_src/**/*.log
+paper_src/**/*.out
+paper_src/**/*.synctex.gz
+paper_src/**/*.toc
+
+# OS / editor
+.DS_Store
+.vscode/
+*.swp
+.ipynb_checkpoints/
+overnight_*.log
+
+# Agent/dev tooling (avoid accidental publication)
+AGENTS.md
+.codex/
+.codex*
+.env
+.env.*
+.envrc
+.direnv/
+kaggle.json
+.python-version
+.tool-versions

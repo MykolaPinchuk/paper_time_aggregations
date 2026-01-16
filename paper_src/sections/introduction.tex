@@ -1,0 +1,20 @@
+Many industrial prediction tasks are temporally structured.
+The data distribution drifts, and high cardinality identifiers can repeat.
+These properties make entity history features attractive.
+They also make evaluation fragile.
+If features incorporate future information, even in subtle ways, reported gains can be illusory.
+
+This paper focuses on time aggregation features for XGBoost models.
+It studies simple entity history statistics computed over recent windows.
+The paper uses strict out-of-time splits and a no-lookahead feature constraint in which features for hour $H$ use only events from hours $< H$.
+
+The main contribution is empirical.
+This paper shows that no-lookahead time aggregation yields a clear lift over a time-aware target encoding baseline.
+It then quantifies how performance changes under window design choices.
+In this setting, trailing windows are a strong default.
+Event count windows are the most reliable modification.
+Gap windows and bucketized windows are consistently worse.
+
+Section 2 defines the dataset and evaluation protocol.
+Section 3 defines the feature families and window constructions.
+Section 4 reports results and practical guidance.

@@ -1,0 +1,91 @@
+This section reports empirical results under the evaluation protocol described above.
+All experiments share the same data splits, model family, entity set, and training protocol.
+
+Time aggregation yields a clear lift over a target-encoding-only baseline under the no-lookahead protocol.
+Appendix Figure \ref{fig:te_lift_deltas} reports paired deltas with confidence intervals for this comparison.
+Table \ref{tab:absolute_metrics_selected} reports the corresponding absolute test metrics for selected specifications.
+Appendix Table \ref{tab:top_specs_absolute} reports additional absolute metrics for representative high-performing specifications.
+
+\begin{table}[t]
+  \centering
+  \small
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{lcccccc}
+    \toprule
+    & \multicolumn{3}{c}{Test ROC AUC} & \multicolumn{3}{c}{Test PR AUC} \\
+    \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+    Specification & A & B & mean & A & B & mean \\
+    \midrule
+    TE only &
+      0.74175 & 0.74382 & 0.74278 &
+      0.36931 & 0.34796 & 0.35863 \\
+    TE plus trailing $(1, 6, 24, 48, 168)$ &
+      0.74831 & 0.75198 & 0.75014 &
+      0.37875 & 0.35629 & 0.36752 \\
+    TE plus trailing $(1, 6, 24, 48, 168)$ plus event50 &
+      0.74864 & 0.75245 & 0.75054 &
+      0.37844 & 0.35745 & 0.36794 \\
+    \bottomrule
+  \end{tabular}
+  }
+  \caption{Absolute test ROC AUC and PR AUC on Fold A and Fold B for selected specifications under the TE plus time aggregation setting.}
+  \label{tab:absolute_metrics_selected}
+\end{table}
+
+\subsection{Window design effects without target encoding}
+Figure \ref{fig:trimmed_note_rocauc} provides a compact view of window design effects in the setting without target encoding.
+It reports test ROC AUC averaged over folds, and it marginalizes over the other design dimension.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_trimmed_note_test_rocauc_by_length_tuple.pdf}
+  \vspace{0.5em}
+  \includegraphics[width=\linewidth]{figures/fig_trimmed_note_test_rocauc_by_shape.pdf}
+  \caption{No target encoding sensitivity view. Panel A reports test ROC AUC by window length tuple, averaged over shapes and folds. Panel B reports test ROC AUC by window shape, averaged over length tuples and folds.}
+  \label{fig:trimmed_note_rocauc}
+\end{figure}
+
+\subsection{Window design summary}
+Figure \ref{fig:traffic_light} summarizes shape effects relative to trailing windows within each length tuple.
+Event count windows are positive in most settings.
+Gap and bucket shapes are negative in most settings.
+Calendar alignment effects are small and mixed.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_traffic_light_shape_contrasts.pdf}
+  \caption{Traffic light summary of shape effects relative to trailing windows, split by whether target encoding is used.}
+  \label{fig:traffic_light}
+\end{figure}
+
+\subsection{Window design choices with target encoding}
+The next comparison evaluates window design choices with target encoding enabled under the same evaluation protocol.
+Trailing windows with length tuple $(1, 6, 24, 48, 168)$ are a strong baseline.
+Event count windows are the only consistently helpful shape modification.
+Gap windows and bucketized windows underperform trailing windows within the same length tuple.
+
+Figure \ref{fig:league_table} provides a ranked view of best and worst specifications using paired deltas in test ROC AUC.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_league_table_top_bottom.pdf}
+  \caption{League table of best and worst specifications by paired deltas in test ROC AUC relative to trailing $(1, 6, 24, 48, 168)$.}
+  \label{fig:league_table}
+\end{figure}
+
+Appendix Figure \ref{fig:decision_plot} provides a detailed view that separates the effect of length tuple choices from the effect of shape choices.
+It reports paired deltas and fold specific estimates.
+
+\subsection{Interaction with target encoding}
+Target encoding yields a large uplift relative to time aggregation only models in this setup.
+Appendix Figure \ref{fig:te_uplift} reports the uplift across specifications.
+Even with target encoding, event count windows provide a small additional gain in ROC AUC over trailing windows.
+The gain is $0.00033$ on Fold A and $0.00047$ on Fold B in the paired tests.
+PR AUC gains from event count windows are small and mixed.
+
+\subsection{Practical guidance}
+For this dataset and protocol, a trailing window design is a robust default.
+An event count window can be added when a small additional ROC AUC gain is valuable.
+Gap windows and bucketized windows are not recommended under no-lookahead evaluation.
+
+\clearpage
