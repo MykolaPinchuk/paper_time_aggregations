@@ -1,5 +1,7 @@
 # Time Aggregation Features for CTR (Reproducibility Repo)
 
+### arXiv link: https://arxiv.org/abs/2601.08121
+
 This repository contains the code and scripts needed to reproduce the results and figures used in the accompanying paper (Avazu CTR prediction; strict out-of-time evaluation; online-safe history features).
 
 ## Quickstart
